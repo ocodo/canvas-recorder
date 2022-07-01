@@ -15,7 +15,7 @@ class Particle {
     this.speedX = this.directionX;
     this.speedY = this.directionY;
   }
-  // create method to draw individual particle
+
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
@@ -52,7 +52,7 @@ function connect() {
         (particleArray[a].y - particleArray[b].y) *
           (particleArray[a].y - particleArray[b].y);
 
-      if (distance < (canvas.width / 6) * (canvas.height / 6)) {
+      if (distance < (canvas.width / 3) * (canvas.height / 3)) {
         opacityValue = 1 - distance / 7000;
         ctx.strokeStyle = "rgba(100,200,255," + opacityValue + ")";
         ctx.beginPath();
