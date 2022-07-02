@@ -1,13 +1,78 @@
+@font-face {
+  font-family: icon;
+  src: url('dripicons-v2.woff');
+}
+
 body {
-  background-color: black;;
+  width: 100%;
+  height: 100%;
+  margin: auto;
 }
 
 #canvas {
   position: absolute;
   width: auto;
   height: auto;
-  background: rgb(0, 12, 20);
   z-index: 0;
+}
+
+body, #canvas {
+  background-color: rgb(0, 12, 20);;
+}
+
+#controls {
+  position: fixed;
+  align-items: right;
+  align-content: right;
+  justify-content: right;
+  justify-items: right;
+  display: flex;
+  bottom: 0px;
+  right: 0px;
+  height: 20px;
+  width: 100%;
+  z-index: 100;
+  background-color: rgba(10,10,10,0.8);
+  color: rgba(255,255,255,0.3);
+}
+
+#controls .button:hover {
+  border-color: white;
+  color: white;
+}
+
+#controls .button {
+  font-family: icon;
+  font-size: 12px;
+  border-radius: 2px;
+  margin-left: 2px;
+  width: 18px;
+  text-align: center;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+#record {
+  color: white;
+}
+
+#record.active, #record.active:hover {
+  color: red;
+}
+
+#stop {
+  color: black;
+}
+
+#stop.ready {
+  color: rgba(255,255,255,0.3);
+}
+
+#timer {
+  font-family: monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  padding-top: 2px;
 }
 
 #image-box {

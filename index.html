@@ -1,12 +1,18 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
   </head>
   <body>
-    <div id="display-box">
-      <canvas id='canvas'></canvas>
-      <div id="image-box"></div>
+    <canvas id='canvas'></canvas>
+    <div id="image-box"></div>
+    <div id="controls">
+      <div id="timer">00:00:00</div>
+      <div id="record" class="button">&#xe01c;</div>
+      <div id="stop" class="button">&#xe01e;</div>
     </div>
+
     <div id="videoContainer">
       <video width="300"
              height="300"
@@ -15,5 +21,6 @@
              id="video"></video>
     </div>
     <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="video-capture.js"></script>
   </body>
 </html>

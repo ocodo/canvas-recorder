@@ -4,8 +4,9 @@ ctx.canvas.width = window.innerWidth
 ctx.canvas.height = window.innerHeight
 let particleArray
 
-let connectionColor = (opacityValue) => `rgba(100,200,255,${opacityValue})`
-let particleColor = () => `rgba(100,200,240,0.5)`
+let connectionColor = (opacityValue) => `rgba(255,100,0,${opacityValue})`
+let particleColor = () => `rgba(0,0,0,1)`
+let particleFillColor = () => `rgba(255,255,255,0.15)`
 
 class Particle {
   constructor(x, y, directionX, directionY, size, color) {
@@ -22,7 +23,7 @@ class Particle {
   draw() {
     ctx.beginPath()
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false)
-    ctx.fillStyle = "rgba(40,170,200,0.25)"
+    ctx.fillStyle = particleFillColor()
     ctx.fill()
   }
 
@@ -56,7 +57,7 @@ function connect() {
           (particleArray[a].y - particleArray[b].y)
 
       if (distance < (canvas.width / 2.1) * (canvas.height / 1.5)) {
-        opacityValue = 1 - distance / 10000
+        opacityValue = 1 - distance / 20000
         ctx.strokeStyle = connectionColor(opacityValue)
         ctx.beginPath()
         ctx.lineWidth = 1
@@ -70,7 +71,9 @@ function connect() {
 
 function init() {
   particleArray = []
-  let numberOfParticles = (canvas.height * canvas.width) / 8000
+  // let numberOfParticles = (canvas.height * canvas.width) / 10000
+
+  let numberOfParticles = 80
   for (let i = 0; i < numberOfParticles; i++) {
     let size = Math.random() * 12
     let x = Math.random() * (innerWidth - size * 2 - size * 2) + size * 2
@@ -95,33 +98,3 @@ function animate() {
 init()
 animate()
 
-const stream = canvas.captureStream()
-const recorder = new MediaRecorder(stream, { mimeType: 'video/webm' })
-
-const data = []
-recorder.ondataavailable = function (event) {
-  if (event.data && event.data.size) {
-    data.push(event.data)
-  }
-}
-
-recorder.onstop = () => {
-  const url = URL.createObjectURL(new Blob(data, { type: 'video/webm' }))
-  document.querySelector("#videoContainer").style.display = "block"
-  document.querySelector("video").src = url
-}
-
-recorder.start()
-
-document.body.addEventListener('keydown', e => {
-  if (e.code == 'Space') {
-    recorder.stop()
-  }
-})
-
-// on resize window
-window.addEventListener("resize", function () {
-  canvas.width = innerWidth
-  canvas.height = innerHeight
-  init()
-})
