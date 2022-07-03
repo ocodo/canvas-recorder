@@ -39,25 +39,37 @@ function convertMsToTime(milliseconds) {
   return `${padDigits(hours,2)}:${padDigits(minutes,2)}:${padDigits(seconds,2)}`;
 }
 
-let recordingTimer = () => setInterval(e => {
+let recordingTimer = (duration) => setTimeout(stopRecording, duration)
+let recordingInterval = () => setInterval(e => {
   timer.textContent = convertMsToTime(Date.now() - window.recordingTime)
 }, 1, 0)
 
 let record = document.querySelector("#record")
+let duration = document.querySelector("#duration")
+
+let stopRecording = () => {
+  record.classList.remove("active")
+  stop.classList.remove("ready")
+  recorder.stop()
+  clearInterval(window.activeInterval)
+  clearTimeout(window.activeTimer)
+}
 
 record.onclick = e => {
   record.classList.add("active")
   stop.classList.add("ready")
-  window.activeTimer = recordingTimer()
+
+  if (duration.textContent != "") {
+    let time = parseFloat(duration.textContent)
+    if (!isNaN(time)) window.activeTimer = recordingTimer(time)
+  }
+
+  window.activeInterval = recordingInterval()
   window.recordingTime = Date.now()
   recorder.start()
 }
 
 let stop = document.querySelector("#stop")
+stop.onclick = stopRecording
 
-stop.onclick = e => {
-  record.classList.remove("active")
-  stop.classList.remove("ready")
-  recorder.stop()
-  clearInterval(window.activeTimer)
-}
+

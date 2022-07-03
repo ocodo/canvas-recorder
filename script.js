@@ -4,9 +4,8 @@ ctx.canvas.width = window.innerWidth
 ctx.canvas.height = window.innerHeight
 let particleArray
 
-let connectionColor = (opacityValue) => `rgba(255,100,0,${opacityValue})`
-let particleColor = () => `rgba(0,0,0,1)`
-let particleFillColor = () => `rgba(255,255,255,0.15)`
+let connectionColor = (opacityValue) => `rgba(255,127,0,${opacityValue})`
+let particleFillColor = () => `rgba(255,0,0,0.10)`
 
 class Particle {
   constructor(x, y, directionX, directionY, size, color) {
@@ -15,15 +14,15 @@ class Particle {
     this.directionX = directionX
     this.directionY = directionY
     this.size = size
-    this.color = color
     this.speedX = this.directionX
     this.speedY = this.directionY
+    this.color = color
   }
 
   draw() {
     ctx.beginPath()
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false)
-    ctx.fillStyle = particleFillColor()
+    ctx.fillStyle = this.color
     ctx.fill()
   }
 
@@ -32,7 +31,9 @@ class Particle {
       this.directionX = -this.directionX
       this.speedX = this.directionX
     }
-    if (this.y + this.size > canvas.height || this.y - this.size < 0) {
+    let boxHeight = canvas.height / 2
+    let offset = boxHeight / 2
+    if (this.y + this.size > boxHeight + offset || this.y - this.size < offset) {
       this.directionY = -this.directionY
       this.speedY = this.directionY
     }
@@ -71,16 +72,21 @@ function connect() {
 
 function init() {
   particleArray = []
-  // let numberOfParticles = (canvas.height * canvas.width) / 10000
 
-  let numberOfParticles = 80
+  let numberOfParticles = 100
   for (let i = 0; i < numberOfParticles; i++) {
     let size = Math.random() * 12
-    let x = Math.random() * (innerWidth - size * 2 - size * 2) + size * 2
-    let y = Math.random() * (innerHeight - size * 2 - size * 2) + size * 2
+
+    let x = Math.random() * (innerWidth - size * 2)
+
+    let boxHeight = innerHeight / 2
+    let offset = boxHeight / 2
+
+    let y = (Math.random() * (boxHeight - size * 2)) + offset
+
     let directionX = Math.random() * 2 - 1
     let directionY = Math.random() * 2 - 1
-    let color = particleColor()
+    let color = particleFillColor()
     particleArray.push(new Particle(x, y, directionX, directionY, size, color))
   }
 }
@@ -88,6 +94,8 @@ function init() {
 function animate() {
   requestAnimationFrame(animate)
   ctx.clearRect(0, 0, innerWidth, innerHeight)
+  ctx.fillStyle =  "#111" // "#0A1e2a"
+  ctx.fillRect(0, 0, innerWidth, innerHeight)
   for (let i = 0; i < particleArray.length; i++) {
     particleArray[i].update()
   }
